@@ -42,7 +42,7 @@ free(path_copy);
 return (-1);
 }
 
-void execute_command(char *line)
+void execute_ncommand(char *line)
 {
 pid_t pid;
 char *args[10];
@@ -107,7 +107,7 @@ perror("can't read command");
 }
 break;
 }
-execute_command(line);
+execute_ncommand(line);
 }
 free(line);
 printf("\n");
