@@ -13,7 +13,7 @@ extern char **environ;
  * Return: int
  */
 
-int cmd_exist(char* cmd)
+int cmd_oexist(char* cmd)
 {
 char *path, *path_copy, *tmp;
 char full_path[1024];
@@ -42,7 +42,7 @@ free(path_copy);
 return (-1);
 }
 
-void execute_command(char *line)
+void execute_qcommand(char *line)
 {
 char ** envp = environ;
 pid_t pid;
@@ -73,7 +73,7 @@ printf("%s\n", *envp);
 envp++;
 } 
 }
-if (cmd_exist(cmd) != 0)
+if (cmd_oexist(cmd) != 0)
 {
 printf("Error: command %s is not found or is not executable\n", cmd);
 return;
@@ -120,7 +120,7 @@ perror("can't read command");
 }
 break;
 }
-execute_command(line);
+execute_qcommand(line);
 }
 free(line);
 printf("\n");
