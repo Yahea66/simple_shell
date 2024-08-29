@@ -11,7 +11,7 @@
  * Return: int
  */
 
-void execute_command(char *line) 
+void execute_ocommand(char *line) 
 {
 pid_t pid;
 char *args[10];
@@ -77,7 +77,7 @@ perror("can't read command");
 }
 break;
 }
-execute_command(line);
+execute_ocommand(line);
 }
 free(line);
 printf("\n");
