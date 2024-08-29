@@ -13,7 +13,7 @@ extern char **environ;
  * Return: int
  */
 
-int cmd_exist(char* cmd)
+int cmd_nexist(char* cmd)
 {
 char *path, *path_copy, *tmp;
 char full_path[1024];
@@ -42,7 +42,7 @@ free(path_copy);
 return (-1);
 }
 
-void execute_command(char *line)
+void execute_pcommand(char *line)
 {
 pid_t pid;
 char *args[10];
@@ -64,7 +64,7 @@ if (strcmp(cmd, "exit") == 0)
 {
 exit(0);
 } 
-if (cmd_exist(cmd) != 0)
+if (cmd_nexist(cmd) != 0)
 {
 printf("Error: command %s is not found or is not executable\n", cmd);
 return;
@@ -111,7 +111,7 @@ perror("can't read command");
 }
 break;
 }
-execute_command(line);
+execute_pcommand(line);
 }
 free(line);
 printf("\n");
