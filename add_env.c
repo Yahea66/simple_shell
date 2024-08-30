@@ -7,20 +7,14 @@
 
 extern char **environ;
 
-/**
- * main - simple shell
- *
- * Return: int
- */
-
-int cmd_oexist(char* cmd)
+int cmd_exist_5(char *cmd)
 {
 char *path, *path_copy, *tmp;
 char full_path[1024];
 path = getenv("PATH");
 if (path == NULL)
 {
-return(-1);
+return (-1);
 }
 path_copy = strdup(path);
 if (path_copy == NULL)
@@ -42,9 +36,9 @@ free(path_copy);
 return (-1);
 }
 
-void execute_qcommand(char *line)
+void execute_command_5(char *line)
 {
-char ** envp = environ;
+char **envp = environ;
 pid_t pid;
 char *args[10];
 int count = 0;
@@ -61,19 +55,20 @@ while ((token = strtok(NULL, " \t\n")) != NULL && count < 9)
 args[count++] = token;
 }
 args[count] = NULL;
-if (strcmp(cmd, "exit") == 0) 
+if (strcmp(cmd, "exit") == 0)
 {
 exit(0);
-} 
+}
 if (strcmp(cmd, "env") == 0)
 {
-while (*envp != NULL) 
+while (*envp != NULL)
 {
 printf("%s\n", *envp);
 envp++;
-} 
 }
-if (cmd_oexist(cmd) != 0)
+return;
+}
+if (cmd_exist_5(cmd) != 0)
 {
 printf("Error: command %s is not found or is not executable\n", cmd);
 return;
@@ -98,7 +93,7 @@ wait(NULL);
 }
 }
 
-int main()
+int main_5()
 {
 char *line = NULL;
 size_t len = 0;
@@ -120,7 +115,7 @@ perror("can't read command");
 }
 break;
 }
-execute_qcommand(line);
+execute_command_5(line);
 }
 free(line);
 printf("\n");

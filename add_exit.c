@@ -7,20 +7,14 @@
 
 extern char **environ;
 
-/**
- * main - simple shell
- *
- * Return: int
- */
-
-int cmd_nexist(char* cmd)
+int cmd_exist_2(char *cmd)
 {
 char *path, *path_copy, *tmp;
 char full_path[1024];
 path = getenv("PATH");
 if (path == NULL)
 {
-return(-1);
+return (-1);
 }
 path_copy = strdup(path);
 if (path_copy == NULL)
@@ -42,7 +36,7 @@ free(path_copy);
 return (-1);
 }
 
-void execute_pcommand(char *line)
+void execute_command_2(char *line)
 {
 pid_t pid;
 char *args[10];
@@ -60,11 +54,7 @@ while ((token = strtok(NULL, " \t\n")) != NULL && count < 9)
 args[count++] = token;
 }
 args[count] = NULL;
-if (strcmp(cmd, "exit") == 0) 
-{
-exit(0);
-} 
-if (cmd_nexist(cmd) != 0)
+if (cmd_exist_2(cmd) != 0)
 {
 printf("Error: command %s is not found or is not executable\n", cmd);
 return;
@@ -89,7 +79,7 @@ wait(NULL);
 }
 }
 
-int main()
+int main_2()
 {
 char *line = NULL;
 size_t len = 0;
@@ -111,7 +101,7 @@ perror("can't read command");
 }
 break;
 }
-execute_pcommand(line);
+execute_command_2(line);
 }
 free(line);
 printf("\n");

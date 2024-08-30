@@ -5,64 +5,15 @@
 #include <sys/wait.h>
 #include <sys/types.h>
 
-extern char **environ;
-
-/**
- * main - simple shell
- *
- * Return: int
- */
-
-int cmd_exist(char* cmd)
-{
-char *path, *path_copy, *tmp;
-char full_path[1024];
-path = getenv("PATH");
-if (path == NULL)
-{
-return(-1);
-}
-path_copy = strdup(path);
-if (path_copy == NULL)
-{
-return (-1);
-}
-tmp = strtok(path_copy, ":");
-while (tmp != NULL)
-{
-snprintf(full_path, sizeof(full_path), "%s/%s", tmp, cmd);
-if (access(full_path, X_OK) == 0)
-{
-free(path_copy);
-return (0);
-}
-tmp = strtok(NULL, ":");
-}
-free(path_copy);
-return (-1);
-}
-
-void execute_ncommand(char *line)
+void execute_command_1(char *command)
 {
 pid_t pid;
-char *args[10];
-int count = 0;
-char *cmd;
-char *token = strtok(line, " \t\n");
-if (token == NULL)
+char *args[2];
+args[0] = command;
+args[1] = NULL;
+if (access(command, X_OK) != 0)
 {
-return;
-}
-cmd = token;
-args[count++] = cmd;
-while ((token = strtok(NULL, " \t\n")) != NULL && count < 9)
-{
-args[count++] = token;
-}
-args[count] = NULL;
-if (cmd_exist(cmd) != 0)
-{
-printf("Error: command %s is not found or is not executable\n", cmd);
+printf("Error: command %s is not found or is not executable\n", command);
 return;
 }
 pid = fork();
@@ -73,7 +24,7 @@ exit(EXIT_FAILURE);
 }
 else if (pid == 0)
 {
-if (execve(cmd, args, environ) == -1)
+if (execve(command, args, NULL) == -1)
 {
 perror("execve failed");
 exit(EXIT_FAILURE);
@@ -85,7 +36,7 @@ wait(NULL);
 }
 }
 
-int main()
+int main_1()
 {
 char *line = NULL;
 size_t len = 0;
@@ -107,9 +58,17 @@ perror("can't read command");
 }
 break;
 }
-execute_ncommand(line);
+if (line[read - 1] == '\n')
+{
+line[read - 1] = '\0';
+}
+if (strlen(line) == 0)
+{
+continue;
+}
+execute_command_1(line);
 }
 free(line);
 printf("\n");
-return (0);
+return 0;
 }
